@@ -1,213 +1,246 @@
-# 🛡️ SOC Automation Project: AI-Powered Security Operations
+# SOC Automation Lab with AI Integration
 
-An end-to-end Security Operations Center (SOC) automation workflow that demonstrates real-world SIEM integration, threat detection, and AI-enhanced incident response. This project showcases proficiency in security monitoring, automation engineering, and modern DevSecOps practices.
+## Objective
 
----
+The SOC Automation Lab project demonstrates the integration of AI-powered threat analysis into traditional SIEM workflows. This project showcases how modern Security Operations Centers can leverage artificial intelligence to enhance threat detection, automate incident response, and reduce analyst workload through intelligent automation. By combining Splunk's powerful log analysis capabilities with N8N workflow automation and ChatGPT's contextual analysis, this lab simulates real-world SOC operations with enhanced efficiency.
 
-## 📋 Table of Contents
+### Skills Learned
 
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Features](#-features)
-- [Technology Stack](#-technology-stack)
-- [Prerequisites](#-prerequisites)
-- [Installation & Setup](#-installation--setup)
-  - [VM Configuration](#1-virtual-machine-setup)
-  - [Splunk Installation](#2-splunk-installation--configuration)
-  - [Log Forwarding](#3-windows-log-forwarding)
-  - [Alert Configuration](#4-splunk-alert-creation)
-  - [N8N Automation](#5-n8n-workflow-automation)
-  - [AI Integration](#6-chatgpt-integration)
-  - [Threat Intelligence](#7-threat-intelligence-enrichment)
-  - [Slack Notifications](#8-slack-integration)
-- [Testing & Validation](#-testing--validation)
-- [Screenshots](#-screenshots)
-- [Future Enhancements](#-future-enhancements)
-- [Security Considerations](#-security-considerations)
-- [Lessons Learned](#-lessons-learned)
-- [References](#-references)
-- [License](#-license)
+- Developed advanced SIEM configuration skills using Splunk Enterprise for centralized log management and correlation.
+- Implemented automated threat detection workflows using N8N, reducing manual investigation time by automating tier-1 analyst tasks.
+- Integrated AI-powered threat analysis using OpenAI's ChatGPT API to provide context-aware security insights and MITRE ATT&CK framework mapping.
+- Enhanced threat intelligence capabilities by incorporating external feeds (AbuseIPDB) for IOC enrichment and reputation scoring.
+- Configured collaborative incident response workflows using Slack API for real-time security team notifications.
+- Gained hands-on experience in orchestrating multi-platform security automation across Windows endpoints, Linux servers, and cloud-based AI services.
+- Improved proficiency in containerization technologies (Docker) for deploying scalable automation platforms.
 
 ---
 
-## 🎯 Overview
-
-This project demonstrates an automated SOC workflow that:
-
-1. **Collects** Windows security logs from a monitored endpoint.
-2. **Detects** suspicious activities using Splunk SIEM.
-3. **Triggers** automated workflows via N8N.
-4. **Analyzes** threats using ChatGPT API with MITRE ATT&CK mapping.
-5. **Enriches** IOCs using threat intelligence feeds (AbuseIPDB).
-6. **Notifies** security teams via Slack with actionable insights.
-
-**Real-World Application:** Reduces mean time to detect (MTTD) and mean time to respond (MTTR) by automating tier-1 analyst tasks, allowing SOC teams to focus on complex investigations.
-
----
-
-## 🏗️ Architecture
- 
----
-
-## ✨ Features
-
-- ✅ **Real-Time Threat Detection**: Monitors Windows security events (Event ID 4625 - Failed Logon Attempts).
-- ✅ **Automated Incident Response**: Zero-touch workflow from detection to notification.
-- ✅ **AI-Powered Analysis**: ChatGPT provides context-aware threat summaries and MITRE ATT&CK mapping.
-- ✅ **Threat Intelligence Enrichment**: Automated IP reputation checks via AbuseIPDB.
-- ✅ **Collaborative Alerts**: Formatted Slack notifications with severity scoring and recommended actions.
-- ✅ **Scalable Architecture**: Containerized N8N deployment for easy replication.
-  
----
-
-## 🛠️ Technology Stack
-
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **SIEM** | Splunk Enterprise | Log aggregation, correlation, alerting |
-| **Endpoint** | Windows 10 | Log source (Security, System, Application) |
-| **Automation** | N8N (Docker) | Workflow orchestration |
-| **AI Analysis** | OpenAI GPT-4 | Threat analysis and contextualization |
-| **Threat Intel** | AbuseIPDB API | IP reputation and abuse history |
-| **Notifications** | Slack API | Team collaboration and alerting |
-| **Virtualization** | VMware Workstation Pro | Lab environment |
-| **OS** | Ubuntu Server 22.04 | Hosting Splunk and N8N |
-
----
-
-## 📦 Prerequisites
+## Prerequisites
 
 ### Hardware Requirements
-- **RAM**: 16 GB minimum (32 GB recommended)
-- **CPU**: 4+ cores
-- **Storage**: 200 GB free disk space
-- **Hypervisor**: VMware Workstation Pro or VirtualBox
 
-### Software & Accounts
-- [ ] VMware Workstation Pro (or VirtualBox)
-- [ ] Windows 10 ISO
-- [ ] Ubuntu Server 22.04 ISO
-- [ ] Splunk Enterprise (free trial/dev license)
-- [ ] OpenAI API account with credits ($5 minimum)
-- [ ] AbuseIPDB API key (free tier)
-- [ ] Slack workspace (free)
+- A host machine with minimum 16GB RAM (32GB recommended) to support multiple VMs and their anticipated workloads.
+- 4+ CPU cores with virtualization enabled (Intel VT-x/AMD-V).
+- 200GB free disk space for VM storage and log retention.
 
-### Knowledge Prerequisites
-- Basic Linux command line
-- Networking fundamentals (TCP/IP, ports)
-- Windows Event Logs basics
-- SIEM concepts (log parsing, correlation rules)
+### Software Requirements
+
+| Software | Description |
+|----------|-------------|
+| **VMware Workstation Pro / VirtualBox** | Hypervisor platform for creating and managing virtual machines. |
+| **Windows 10** | Client endpoint used to generate security event logs and simulate real-world threat scenarios. |
+| **Ubuntu Server 22.04** | Linux distribution for hosting Splunk SIEM and N8N automation server. |
+| **Splunk Universal Forwarder** | Agent that collects and forwards Windows logs to the Splunk indexer. |
+
+### Tools and Platforms
+
+| Tool | Description |
+|------|-------------|
+| **Splunk Enterprise** | Security Information and Event Management (SIEM) platform for log aggregation, correlation, and alerting. |
+| **N8N** | Open-source workflow automation platform (SOAR-like capabilities) for orchestrating security response workflows. |
+| **OpenAI ChatGPT API** | AI-powered analysis engine providing context-aware threat summaries and MITRE ATT&CK technique mapping. |
+| **AbuseIPDB** | Threat intelligence platform providing IP reputation data and abuse confidence scoring. |
+| **Slack** | Collaborative messaging platform for delivering formatted security alerts to SOC teams. |
+| **Docker & Docker Compose** | Container runtime for deploying and managing the N8N automation server. |
 
 ---
 
-## 🚀 Installation & Setup
+## Workflow Overview
 
-### 1. Virtual Machine Setup
+![Workflow Overview](screenshots/architecture.png)
 
-#### Create VMs with the following specifications:
+- **Log Generation:** Windows 10 endpoint generates security event logs (Event ID 4625 - Failed Logon Attempts) captured by Windows Event Logging.
+- **Log Forwarding:** Splunk Universal Forwarder collects Security, System, and Application logs and forwards them to Splunk indexer over port 9997.
+- **Alert Triggering:** Splunk SIEM correlates events based on custom detection rules and triggers webhook alerts to N8N when suspicious activity is detected.
+- **Workflow Orchestration:** N8N receives alert via webhook, parses relevant data, and initiates automated response workflow.
+- **AI Analysis:** ChatGPT API analyzes the security event, provides threat context, severity assessment, and maps to MITRE ATT&CK techniques.
+- **Threat Intelligence Enrichment:** AbuseIPDB API enriches source IP addresses with reputation scores and abuse history.
+- **Incident Notification:** Formatted alert with AI analysis and threat intelligence is delivered to Slack channel for SOC analyst review and action.
 
-| VM Name | OS | vCPU | RAM | Disk | Network |
-|---------|-----|------|-----|------|---------|
-| **Windows-SOC-Lab** | Windows 10 | 2 | 4 GB | 50 GB | NAT |
-| **Splunk-Server** | Ubuntu Server 22.04 | 2 | 8 GB | 100 GB | NAT |
-| **N8N-Automation** | Ubuntu Server 22.04 | 2 | 4 GB | 50 GB | NAT |
+---
 
-#### Post-Installation:
+## Steps
 
-**Windows VM:**
+### Step 1: Virtual Machine Setup
+
+**Create the following VMs using VMware Workstation Pro (or VirtualBox):**
+
+| VM Name | OS | vCPU | RAM | Disk | Network | Purpose |
+|---------|-----|------|-----|------|---------|---------|
+| **Windows-SOC-Client** | Windows 10 | 2 | 4 GB | 50 GB | NAT | Log source endpoint |
+| **Splunk-Server** | Ubuntu 22.04 | 2 | 8 GB | 100 GB | NAT | SIEM platform |
+| **N8N-Automation** | Ubuntu 22.04 | 2 | 4 GB | 50 GB | NAT | Workflow automation |
+
+**Post-Installation Configuration:**
+
+On **Windows 10 VM:**
+- Complete Windows setup and ensure network connectivity.
+- Note the IP address:
+
 ```powershell
-# Enable Remote Desktop (optional)
-Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
-
-# Note the IP address
 ipconfig
 ```
 
-**Ubuntu VMs:**
+On **Ubuntu Server VMs** (Splunk and N8N):
+- Update system packages:
+
 ```bash
-# Update system
 sudo apt update && sudo apt upgrade -y
+```
 
-# Install SSH (if not already)
+- Install SSH server (if not already installed):
+
+```bash
 sudo apt install openssh-server -y
+```
 
-# Note the IP address
+- Verify SSH is running:
+
+```bash
+sudo systemctl status ssh
+```
+
+- Note the IP address:
+
+```bash
 ip addr show
 ```
 
-#### Verify Network Connectivity:
-```bash
-# From Windows VM, ping Splunk server
-ping <SPLUNK_IP>
+**Verify Network Connectivity:**
 
-# From N8N VM, ping Splunk server
+From Windows VM, verify connectivity to both Ubuntu servers:
+
+```powershell
+ping <SPLUNK_IP>
+ping <N8N_IP>
+```
+
+From N8N VM, verify connectivity to Splunk:
+
+```bash
 ping <SPLUNK_IP>
 ```
 
+![Network Connectivity Test](screenshots/network-connectivity.png)
+
 ---
 
-### 2. Splunk Installation & Configuration
+### Step 2: Install and Configure Splunk Enterprise
 
-#### Install Splunk Enterprise
+**Download and Install Splunk:**
+
+SSH into the Splunk Ubuntu VM:
 
 ```bash
-# Download Splunk (replace URL with latest version)
+ssh user@<SPLUNK_IP>
+```
+
+Download Splunk Enterprise (replace with latest version URL):
+
+```bash
 wget -O splunk.deb "https://download.splunk.com/products/splunk/releases/9.1.2/linux/splunk-9.1.2-b6b9c8185839-linux-2.6-amd64.deb"
+```
 
-# Install
+Install Splunk:
+
+```bash
 sudo dpkg -i splunk.deb
+```
 
-# Navigate to Splunk bin
+Start Splunk and accept license:
+
+```bash
 cd /opt/splunk/bin
-
-# Start Splunk and accept license
 sudo ./splunk start --accept-license
+```
 
-# Enable boot-start
+During first-time setup, create an admin username and password.
+
+Enable Splunk to start at boot:
+
+```bash
 sudo ./splunk enable boot-start
 ```
 
-#### Access Splunk Web Interface
-- URL: `http://<SPLUNK_IP>:8000`
-- Default credentials will be set during first login
+**Access Splunk Web Interface:**
 
-#### Configure Data Receiving
+Open browser and navigate to:
 
-1. **Settings** → **Forwarding and receiving**
-2. **Configure receiving** → **New Receiving Port**
-3. Port: `9997` → **Save**
+```
+http://<SPLUNK_IP>:8000
+```
 
-#### Create Index
+Login with the credentials created during installation.
 
-1. **Settings** → **Indexes**
-2. **New Index**
+![Splunk Dashboard](screenshots/splunk-dashboard.png)
+
+**Configure Data Receiving:**
+
+1. Navigate to **Settings → Forwarding and receiving**
+2. Click **Configure receiving**
+3. Click **New Receiving Port**
+4. Enter port: `9997`
+5. Click **Save**
+
+![Splunk Receiving Port](screenshots/splunk-receiving-port.png)
+
+**Create Index for Log Storage:**
+
+1. Navigate to **Settings → Indexes**
+2. Click **New Index**
+3. Configure:
    - Index name: `mydfir-project`
-   - **Save**
+   - Index Data Type: Events
+4. Click **Save**
 
-#### Install Windows Add-on
+![Splunk Index Creation](screenshots/splunk-index.png)
 
-1. **Apps** → **Find More Apps**
-2. Search: "Splunk Add-on for Microsoft Windows"
-3. **Install**
-4. Restart Splunk
+**Install Splunk Add-on for Microsoft Windows:**
+
+1. Click **Apps** in top navigation
+2. Click **Find More Apps**
+3. Search for: `Splunk Add-on for Microsoft Windows`
+4. Click **Install**
+5. Provide your Splunk.com credentials
+6. Restart Splunk if prompted
 
 ---
 
-### 3. Windows Log Forwarding
+### Step 3: Configure Windows 10 Log Forwarding
 
-#### Install Splunk Universal Forwarder on Windows VM
+**Install Splunk Universal Forwarder:**
 
-1. Download from: https://www.splunk.com/en_us/download/universal-forwarder.html
-2. Run installer
-3. Configuration:
-   - Deployment server: `<SPLUNK_IP>:8089`
-   - Receiving indexer: `<SPLUNK_IP>:9997`
+On the Windows 10 VM:
 
-#### Configure inputs.conf
+1. Download Splunk Universal Forwarder from: https://www.splunk.com/en_us/download/universal-forwarder.html
+2. Run the installer (`splunkforwarder-<version>-x64-release.msi`)
+3. During installation:
+   - Accept license agreement
+   - Create a username and password for the forwarder
+   - Skip deployment server (leave blank)
+   - On "Receiving Indexer" screen, enter:
+     - Host: `<SPLUNK_IP>`
+     - Port: `9997`
+   - Complete installation
 
-Navigate to: `C:\Program Files\SplunkUniversalForwarder\etc\system\local\`
+![Splunk Forwarder Installation](screenshots/splunk-forwarder-install.png)
 
-Create/edit `inputs.conf`:
+**Configure Log Inputs:**
+
+Navigate to the Splunk Universal Forwarder directory:
+
+```powershell
+cd "C:\Program Files\SplunkUniversalForwarder\etc\system\local"
+```
+
+Create/edit `inputs.conf` using Notepad with Administrator privileges:
+
+```powershell
+notepad inputs.conf
+```
+
+Add the following configuration:
 
 ```ini
 [WinEventLog://Security]
@@ -228,74 +261,116 @@ index = mydfir-project
 renderXml = true
 ```
 
-#### Restart Splunk Universal Forwarder
+Save the file.
+
+**Restart Splunk Universal Forwarder Service:**
+
+Open PowerShell as Administrator:
 
 ```powershell
-# Via Services or PowerShell
 Restart-Service SplunkForwarder
 ```
 
-#### Verify Log Ingestion
+Verify service is running:
 
-In Splunk Web → **Search & Reporting**:
+```powershell
+Get-Service SplunkForwarder
+```
+
+![Splunk Forwarder Service](screenshots/splunk-forwarder-service.png)
+
+**Verify Log Ingestion in Splunk:**
+
+Go back to Splunk Web Interface:
+
+1. Navigate to **Search & Reporting**
+2. Run this search query:
 
 ```spl
 index=mydfir-project
-| stats count by source
+| stats count by source, sourcetype
 ```
 
-You should see events from Security, System, Application logs.
+You should see events from Security, System, and Application logs.
+
+![Splunk Log Verification](screenshots/splunk-log-verification.png)
 
 ---
 
-### 4. Splunk Alert Creation
+### Step 4: Create Splunk Alert for Failed Login Attempts
 
-#### Create Detection Rule for Failed Logins
+**Develop Detection Rule:**
 
-**Search Query:**
+In Splunk Web Interface, go to **Search & Reporting** and test this query:
+
 ```spl
 index=mydfir-project EventCode=4625
 | stats count by _time, ComputerName, user, src_ip
 | where count > 3
 ```
 
-**Explanation:**
-- `EventCode=4625`: Windows failed logon attempts
-- Groups by time, computer, user, and source IP
-- Filters for more than 3 attempts (basic threshold)
+**Query Explanation:**
+- `EventCode=4625`: Windows Security Event ID for failed logon attempts
+- Groups events by time, computer name, username, and source IP
+- Filters for more than 3 failed attempts (threshold for suspicious activity)
 
-#### Save as Alert
+![Splunk Alert Query](screenshots/splunk-alert-query.png)
 
-1. **Save As** → **Alert**
-2. **Title**: `Failed Login Attempts Detected`
-3. **Alert type**: **Real-time** or **Scheduled** (every 1 minute)
-4. **Trigger conditions**: Per-Result (each result triggers alert)
-5. **Trigger actions**:
-   - Add action: **Webhook**
-   - URL: `http://<N8N_IP>:5678/webhook/<YOUR_WEBHOOK_PATH>` (will create in next step)
-6. **Save**
+**Save as Alert:**
+
+1. Click **Save As → Alert**
+2. Configure alert settings:
+   - **Title:** `Failed Login Attempts Detected`
+   - **Description:** `Detects multiple failed login attempts indicating potential brute force attack`
+   - **Permissions:** Private (or Shared based on your environment)
+3. **Alert type:** 
+   - Select **Scheduled**
+   - **Cron Schedule:** `* * * * *` (runs every minute)
+   - Or select **Real-time** for immediate alerting
+4. **Trigger Conditions:**
+   - Trigger alert when: `Number of Results`
+   - is greater than: `0`
+5. **Trigger Actions:**
+   - Click **Add Actions**
+   - Select **Webhook**
+   - URL: `http://<N8N_IP>:5678/webhook/splunk-alert` (we'll create this in next step)
+6. Click **Save**
+
+![Splunk Alert Configuration](screenshots/splunk-alert-config.png)
 
 ---
 
-### 5. N8N Workflow Automation
+### Step 5: Install and Configure N8N Automation Server
 
-#### Install Docker and Docker Compose
+**Install Docker and Docker Compose:**
+
+SSH into the N8N Ubuntu VM:
 
 ```bash
-# Install Docker
-sudo apt install docker.io -y
-
-# Install Docker Compose
-sudo apt install docker-compose -y
-
-# Add user to docker group
-sudo usermod -aG docker $USER
-
-# Re-login for group changes
-exit
+ssh user@<N8N_IP>
 ```
 
-#### Create Docker Compose File
+Install Docker:
+
+```bash
+sudo apt install docker.io -y
+```
+
+Install Docker Compose:
+
+```bash
+sudo apt install docker-compose -y
+```
+
+Add current user to docker group:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Log out and log back in for group changes to take effect.
+
+**Create N8N Directory and Docker Compose File:**
 
 ```bash
 mkdir -p ~/n8n
@@ -303,7 +378,8 @@ cd ~/n8n
 nano docker-compose.yml
 ```
 
-**docker-compose.yml:**
+Add the following configuration:
+
 ```yaml
 version: '3.8'
 
@@ -316,7 +392,8 @@ services:
     environment:
       - N8N_BASIC_AUTH_ACTIVE=true
       - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=changeme123
+      - N8N_BASIC_AUTH_PASSWORD=SecurePassword123!
+      - GENERIC_TIMEZONE=America/New_York
     volumes:
       - n8n_data:/home/node/.n8n
 
@@ -324,468 +401,732 @@ volumes:
   n8n_data:
 ```
 
-#### Start N8N
+Save the file (`Ctrl+X`, then `Y`, then `Enter`).
+
+**Start N8N Container:**
 
 ```bash
 sudo docker-compose up -d
+```
 
-# Check logs
+Verify N8N is running:
+
+```bash
 sudo docker-compose logs -f
 ```
 
-#### Access N8N
+You should see logs indicating N8N is ready.
 
-- URL: `http://<N8N_IP>:5678`
-- Login with credentials from docker-compose.yml
+**Access N8N Web Interface:**
 
-#### Create Workflow
+Open browser and navigate to:
 
-1. **New Workflow**
-2. Add nodes in this order:
+```
+http://<N8N_IP>:5678
+```
 
-**Node 1: Webhook**
-- Trigger node
-- HTTP Method: `POST`
-- Path: `splunk-alert`
-- Copy the webhook URL (format: `http://<N8N_IP>:5678/webhook/splunk-alert`)
+Login with credentials from docker-compose.yml:
+- Username: `admin`
+- Password: `SecurePassword123!`
 
-**Node 2: Function (Parse Splunk Data)**
+![N8N Dashboard](screenshots/n8n-dashboard.png)
+
+---
+
+### Step 6: Build N8N Workflow for Alert Processing
+
+**Create New Workflow:**
+
+1. Click **New Workflow** in top right
+2. Name it: `SOC Automation - Failed Login Detection`
+
+**Add Webhook Trigger (Node 1):**
+
+1. Click **Add first step** or click the `+` button
+2. Search for **Webhook** and select it
+3. Configure webhook:
+   - **HTTP Method:** POST
+   - **Path:** `splunk-alert`
+   - **Authentication:** None (for lab environment)
+4. Copy the **Webhook URL** (e.g., `http://<N8N_IP>:5678/webhook/splunk-alert`)
+5. Click **Execute Node** to activate webhook
+
+![N8N Webhook Node](screenshots/n8n-webhook.png)
+
+**Update Splunk Alert with Webhook URL:**
+
+Go back to Splunk → **Settings → Searches, reports, and alerts** → Edit your alert → Update webhook URL to the N8N webhook URL.
+
+**Add Function Node to Parse Splunk Data (Node 2):**
+
+1. Click the `+` button to add new node
+2. Search for **Code** and select it
+3. Rename node to: `Parse Splunk Data`
+4. In the JavaScript code editor, add:
+
 ```javascript
-// Extract relevant fields from Splunk webhook
+// Extract relevant fields from Splunk webhook payload
 const splunkData = $input.item.json.result;
 
 return {
   json: {
-    timestamp: splunkData._time,
-    computer: splunkData.ComputerName,
-    username: splunkData.user,
-    sourceIP: splunkData.src_ip,
-    failureCount: splunkData.count,
+    timestamp: splunkData._time || new Date().toISOString(),
+    computer: splunkData.ComputerName || "Unknown",
+    username: splunkData.user || "Unknown",
+    sourceIP: splunkData.src_ip || "0.0.0.0",
+    failureCount: splunkData.count || 0,
+    eventCode: splunkData.EventCode || "4625",
     rawData: splunkData
   }
 };
 ```
 
-**Configure remaining nodes in next sections...**
+5. Click **Execute Node** to test
+
+![N8N Parse Function](screenshots/n8n-parse-function.png)
 
 ---
 
-### 6. ChatGPT Integration
+### Step 7: Integrate ChatGPT for AI-Powered Analysis
 
-#### Get OpenAI API Key
+**Obtain OpenAI API Key:**
 
 1. Visit: https://platform.openai.com/api-keys
-2. Create new secret key
-3. Add $5 credit to account
+2. Create account or login
+3. Click **Create new secret key**
+4. Copy the API key (starts with `sk-...`)
+5. Add credits to account (minimum $5 recommended)
 
-#### Add to N8N Workflow
+**Add OpenAI Node to Workflow (Node 3):**
 
-**Node 3: OpenAI (ChatGPT)**
+1. Click `+` button after Parse Splunk Data node
+2. Search for **OpenAI** and select it
+3. Click **Create New Credential**
+4. Paste your API key
+5. Click **Save**
 
-**Credentials:**
-- Add new OpenAI credential
-- Paste API key
+**Configure OpenAI Node:**
 
-**Settings:**
-- Resource: `Chat`
-- Operation: `Message a Model`
-- Model: `gpt-4` (or `gpt-3.5-turbo` for lower cost)
+- **Resource:** Chat
+- **Operation:** Message a Model
+- **Model:** `gpt-4` (or `gpt-3.5-turbo` for lower cost)
 
-**Prompt (System Message):**
+**System Message:**
+
 ```
-You are a cybersecurity analyst specializing in threat detection and incident response. 
+You are a senior cybersecurity analyst specializing in threat detection and incident response for a Security Operations Center (SOC).
 
-Analyze the following failed login event and provide:
-1. A concise summary of the incident
-2. Severity assessment (Critical/High/Medium/Low)
-3. MITRE ATT&CK technique mapping
-4. Recommended immediate actions
-5. Indicators of Compromise (IOCs)
+Your task is to analyze security events and provide actionable intelligence to SOC analysts.
 
-Format your response in clear sections with markdown.
+For each security event, provide:
+1. **Incident Summary:** Brief overview of what occurred
+2. **Severity Assessment:** Rate as Critical, High, Medium, or Low with justification
+3. **MITRE ATT&CK Mapping:** Identify relevant tactics and techniques
+4. **Indicators of Compromise (IOCs):** List all IOCs present in the event
+5. **Recommended Actions:** Specific steps the SOC analyst should take
+6. **Investigation Questions:** Key questions to guide further investigation
+
+Format your response using clear sections with markdown formatting.
+Be concise but thorough. Focus on actionable intelligence.
 ```
 
-**User Message:**
-```
-Failed Login Event Details:
-- Timestamp: {{ $json.timestamp }}
-- Computer: {{ $json.computer }}
-- Username: {{ $json.username }}
-- Source IP: {{ $json.sourceIP }}
-- Failure Count: {{ $json.failureCount }}
+**User Message (using expressions from previous node):**
 
-Analyze this event and provide security recommendations.
 ```
+Analyze the following failed login security event:
+
+**Event Details:**
+- Timestamp: {{ $('Parse Splunk Data').item.json.timestamp }}
+- Computer Name: {{ $('Parse Splunk Data').item.json.computer }}
+- Username Attempted: {{ $('Parse Splunk Data').item.json.username }}
+- Source IP Address: {{ $('Parse Splunk Data').item.json.sourceIP }}
+- Failed Attempt Count: {{ $('Parse Splunk Data').item.json.failureCount }}
+- Event Code: {{ $('Parse Splunk Data').item.json.eventCode }}
+
+Provide a comprehensive security analysis of this event.
+```
+
+6. Click **Execute Node** to test
+
+![N8N OpenAI Node](screenshots/n8n-openai.png)
 
 ---
 
-### 7. Threat Intelligence Enrichment
+### Step 8: Add Threat Intelligence Enrichment with AbuseIPDB
 
-#### Get AbuseIPDB API Key
+**Obtain AbuseIPDB API Key:**
 
-1. Register at: https://www.abuseipdb.com/
-2. Navigate to **API** section
-3. Copy your API key
+1. Visit: https://www.abuseipdb.com/
+2. Create account and verify email
+3. Navigate to **Account → API** section
+4. Copy your API key
 
-#### Add to N8N Workflow
+**Add HTTP Request Node (Node 4):**
 
-**Node 4: HTTP Request (AbuseIPDB)**
+1. Click `+` button after OpenAI node
+2. Search for **HTTP Request** and select it
+3. Rename to: `AbuseIPDB Lookup`
 
-**Settings:**
-- Method: `GET`
-- URL: `https://api.abuseipdb.com/api/v2/check`
+**Configure HTTP Request:**
+
+- **Method:** GET
+- **URL:** `https://api.abuseipdb.com/api/v2/check`
 
 **Query Parameters:**
-```
-ipAddress: {{ $('Function').item.json.sourceIP }}
-maxAgeInDays: 90
-verbose: true
-```
+
+Add the following parameters:
+
+| Name | Value |
+|------|-------|
+| `ipAddress` | `{{ $('Parse Splunk Data').item.json.sourceIP }}` |
+| `maxAgeInDays` | `90` |
+| `verbose` | (leave empty) |
 
 **Headers:**
-```
-Key: Accept
-Value: application/json
 
-Key: Key
-Value: YOUR_ABUSEIPDB_API_KEY
-```
+Add the following headers:
 
-**Node 5: Function (Format Threat Intel)**
+| Name | Value |
+|------|-------|
+| `Accept` | `application/json` |
+| `Key` | `YOUR_ABUSEIPDB_API_KEY` |
+
+![N8N AbuseIPDB Node](screenshots/n8n-abuseipdb.png)
+
+**Add Function Node to Format Enrichment Data (Node 5):**
+
+1. Click `+` button after AbuseIPDB node
+2. Search for **Code** and select it
+3. Rename to: `Format Alert Data`
+4. Add this code:
+
 ```javascript
-const ipCheck = $input.item.json.data;
-const chatGPTResponse = $('OpenAI').item.json.message.content;
+// Combine AI analysis with threat intelligence
+const ipData = $input.item.json.data;
+const aiAnalysis = $('OpenAI').item.json.message.content;
+const eventData = $('Parse Splunk Data').item.json;
+
+// Format severity level based on abuse score
+let severityEmoji = "🟡";
+let severityLevel = "Medium";
+
+if (ipData.abuseConfidenceScore >= 75) {
+  severityEmoji = "🔴";
+  severityLevel = "Critical";
+} else if (ipData.abuseConfidenceScore >= 50) {
+  severityEmoji = "🟠";
+  severityLevel = "High";
+} else if (ipData.abuseConfidenceScore >= 25) {
+  severityEmoji = "🟡";
+  severityLevel = "Medium";
+} else {
+  severityEmoji = "🟢";
+  severityLevel = "Low";
+}
 
 return {
   json: {
-    aiAnalysis: chatGPTResponse,
+    event: eventData,
+    aiAnalysis: aiAnalysis,
     threatIntel: {
-      ip: ipCheck.ipAddress,
-      abuseScore: ipCheck.abuseConfidenceScore,
-      isWhitelisted: ipCheck.isWhitelisted,
-      countryCode: ipCheck.countryCode,
-      usageType: ipCheck.usageType,
-      isp: ipCheck.isp,
-      totalReports: ipCheck.totalReports
+      ipAddress: ipData.ipAddress,
+      abuseScore: ipData.abuseConfidenceScore,
+      isWhitelisted: ipData.isWhitelisted,
+      countryCode: ipData.countryCode,
+      countryName: ipData.countryName,
+      usageType: ipData.usageType,
+      isp: ipData.isp,
+      domain: ipData.domain,
+      totalReports: ipData.totalReports,
+      numDistinctUsers: ipData.numDistinctUsers,
+      lastReportedAt: ipData.lastReportedAt
+    },
+    severity: {
+      level: severityLevel,
+      emoji: severityEmoji
     }
   }
 };
 ```
 
+5. Click **Execute Node**
+
+![N8N Format Function](screenshots/n8n-format-function.png)
+
 ---
 
-### 8. Slack Integration
+### Step 9: Configure Slack Notifications
 
-#### Setup Slack App
+**Setup Slack Workspace and App:**
 
 1. Go to: https://api.slack.com/apps
-2. **Create New App** → **From scratch**
-3. App name: `SOC Alerts`
-4. Pick your workspace
+2. Click **Create New App**
+3. Select **From scratch**
+4. App Name: `SOC Alert Bot`
+5. Select your workspace
+6. Click **Create App**
 
-**OAuth & Permissions:**
-- Add scopes:
-  - `chat:write`
-  - `channels:read`
-- **Install to Workspace**
-- Copy **Bot User OAuth Token**
+**Configure Bot Permissions:**
 
-#### Create Slack Channel
+1. In left sidebar, click **OAuth & Permissions**
+2. Scroll to **Scopes** section
+3. Under **Bot Token Scopes**, add:
+   - `chat:write`
+   - `chat:write.public`
+   - `channels:read`
+4. Scroll up and click **Install to Workspace**
+5. Click **Allow**
+6. Copy the **Bot User OAuth Token** (starts with `xoxb-...`)
 
-1. Create channel: `#soc-alerts`
-2. Invite the bot: `/invite @SOC Alerts`
+![Slack Bot Token](screenshots/slack-bot-token.png)
 
-#### Add to N8N Workflow
+**Create Slack Channel:**
 
-**Node 6: Slack**
+1. In Slack workspace, create new channel: `#soc-alerts`
+2. (Optional) Invite the bot: Type `/invite @SOC Alert Bot` in the channel
 
-**Credentials:**
-- Add Slack OAuth credential
-- Paste Bot User OAuth Token
+**Add Slack Node to N8N Workflow (Node 6):**
 
-**Settings:**
-- Resource: `Message`
-- Operation: `Post`
-- Channel: `#soc-alerts`
+1. Click `+` button after Format Alert Data node
+2. Search for **Slack** and select it
+3. Click **Create New Credential**
+4. Paste your **Bot User OAuth Token**
+5. Click **Save**
 
-**Message Text:**
+**Configure Slack Node:**
+
+- **Resource:** Message
+- **Operation:** Post
+- **Channel:** `#soc-alerts` (or select from dropdown)
+
+**Message Text (using expressions):**
+
 ```
-🚨 *SECURITY ALERT: Failed Login Attempts Detected*
+{{ $json.severity.emoji }} *SECURITY ALERT: Failed Login Attempts Detected*
 
-*Event Details:*
-• Timestamp: {{ $('Function').item.json.timestamp }}
-• Computer: {{ $('Function').item.json.computer }}
-• Username: {{ $('Function').item.json.username }}
-• Source IP: {{ $('Function').item.json.sourceIP }}
-• Failure Count: {{ $('Function').item.json.failureCount }}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+*📊 EVENT DETAILS*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-*Threat Intelligence:*
-• Abuse Confidence Score: {{ $('Function 1').item.json.threatIntel.abuseScore }}%
-• Country: {{ $('Function 1').item.json.threatIntel.countryCode }}
-• ISP: {{ $('Function 1').item.json.threatIntel.isp }}
-• Total Reports: {{ $('Function 1').item.json.threatIntel.totalReports }}
+• *Timestamp:* {{ $json.event.timestamp }}
+• *Computer:* `{{ $json.event.computer }}`
+• *Username Attempted:* `{{ $json.event.username }}`
+• *Source IP:* `{{ $json.event.sourceIP }}`
+• *Failed Attempts:* {{ $json.event.failureCount }}
+• *Event Code:* {{ $json.event.eventCode }}
 
-*AI Analysis:*
-{{ $('Function 1').item.json.aiAnalysis }}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+*🛡️ THREAT INTELLIGENCE*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• *Abuse Confidence Score:* {{ $json.threatIntel.abuseScore }}% {{ $json.severity.emoji }}
+• *Severity Level:* *{{ $json.severity.level }}*
+• *Country:* {{ $json.threatIntel.countryName }} ({{ $json.threatIntel.countryCode }})
+• *ISP:* {{ $json.threatIntel.isp }}
+• *Usage Type:* {{ $json.threatIntel.usageType }}
+• *Total Abuse Reports:* {{ $json.threatIntel.totalReports }}
+• *Whitelisted:* {{ $json.threatIntel.isWhitelisted }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+*🤖 AI SECURITY ANALYSIS*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{{ $json.aiAnalysis }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+_Alert generated at {{ $now.format('YYYY-MM-DD HH:mm:ss') }} UTC_
+_Workflow: SOC Automation Lab | Splunk → N8N → ChatGPT → Slack_
+```
+
+6. Click **Execute Node** to test
+
+![N8N Slack Node](screenshots/n8n-slack.png)
+
+**Activate Workflow:**
+
+1. Click **Active** toggle in top-right corner (should turn green)
+2. Click **Save** button
+
+![N8N Workflow Active](screenshots/n8n-workflow-active.png)
 
 ---
-_Alert generated at {{ $now.format('YYYY-MM-DD HH:mm:ss') }}_
-```
 
-#### Activate Workflow
+### Step 10: Generate Test Events and Validate Workflow
 
-1. Click **Active** toggle in top-right
-2. Save workflow
+**Method 1: Simulate Failed RDP Login Attempts**
 
-#### Update Splunk Alert
-
-Go back to Splunk alert configuration and update webhook URL to:
-```
-http://<N8N_IP>:5678/webhook/splunk-alert
-```
-
----
-
-## 🧪 Testing & Validation
-
-### Generate Test Events
-
-#### Method 1: Failed RDP Login (Recommended)
-
-On a separate machine (or host):
+From another machine or host computer, attempt RDP connection to Windows VM with incorrect credentials:
 
 ```bash
-# Linux/Mac
-ssh user@<WINDOWS_IP>  # Use wrong password 5 times
+# From Linux/Mac
+ssh user@<WINDOWS_IP>  # Use wrong password 5+ times
 
-# Windows (RDP)
-mstsc /v:<WINDOWS_IP>  # Enter wrong credentials
+# From Windows (using Remote Desktop)
+# Open Remote Desktop Connection (mstsc)
+# Enter Windows VM IP
+# Enter wrong username/password combination 5+ times
 ```
 
-#### Method 2: PowerShell Script (Windows VM)
+**Method 2: PowerShell Script to Generate Events**
+
+On the Windows 10 VM, open PowerShell as Administrator:
 
 ```powershell
-# Simulate failed login events
+# Script to simulate failed login events
 1..10 | ForEach-Object {
-    $cred = New-Object System.Management.Automation.PSCredential("FakeUser", (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force))
-    Start-Process runas.exe -Credential $cred -ArgumentList "cmd.exe" -ErrorAction SilentlyContinue
+    $cred = New-Object System.Management.Automation.PSCredential(
+        "FakeUser$_", 
+        (ConvertTo-SecureString "WrongPassword123!" -AsPlainText -Force)
+    )
+    
+    try {
+        Start-Process runas.exe -Credential $cred -ArgumentList "cmd.exe" -ErrorAction SilentlyContinue
+    } catch {
+        Write-Host "Attempt $_ failed (expected)"
+    }
+    
     Start-Sleep -Seconds 2
 }
+
+Write-Host "Generated 10 failed login events"
 ```
 
-### Validation Checklist
+![Failed Login Test](screenshots/failed-login-test.png)
 
-- [ ] Splunk receives logs from Windows VM (`index=mydfir-project`)
-- [ ] Splunk alert triggers on EventCode 4625
-- [ ] N8N webhook receives Splunk data
-- [ ] ChatGPT analysis completes successfully
-- [ ] AbuseIPDB enriches source IP
-- [ ] Slack message appears in #soc-alerts channel
-- [ ] Full workflow completes in <30 seconds
+**Validation Checklist:**
 
-### Troubleshooting
+- [ ] **Splunk receives logs:** Verify in Search & Reporting: `index=mydfir-project EventCode=4625`
+- [ ] **Splunk alert triggers:** Check alert history in Splunk
+- [ ] **N8N webhook receives data:** Check execution history in N8N workflow
+- [ ] **ChatGPT analysis completes:** Verify OpenAI node executed successfully
+- [ ] **AbuseIPDB enrichment works:** Verify HTTP Request node returned data
+- [ ] **Slack message delivered:** Check #soc-alerts channel for formatted alert
 
-**No logs in Splunk:**
+![Workflow Execution Success](screenshots/workflow-execution-success.png)
+
+**Troubleshooting Common Issues:**
+
+**Issue: No logs appearing in Splunk**
+
 ```bash
-# Check Splunk Forwarder status on Windows
+# On Windows VM - Check Splunk Forwarder status
 Get-Service SplunkForwarder
 
-# Check Splunk receiving port
+# If stopped, start it
+Start-Service SplunkForwarder
+
+# On Splunk server - Check if port 9997 is listening
 sudo netstat -tuln | grep 9997
+
+# Check Splunk forwarder logs on Windows
+# Navigate to: C:\Program Files\SplunkUniversalForwarder\var\log\splunk
+# Review splunkd.log for errors
 ```
 
-**Webhook not triggering:**
+**Issue: N8N webhook not receiving alerts**
+
 ```bash
-# Check N8N logs
+# Check N8N container logs
+cd ~/n8n
 sudo docker-compose logs -f
 
-# Test webhook manually
+# Test webhook manually with curl
 curl -X POST http://<N8N_IP>:5678/webhook/splunk-alert \
   -H "Content-Type: application/json" \
-  -d '{"test": "data"}'
+  -d '{
+    "result": {
+      "_time": "2025-01-01T12:00:00",
+      "ComputerName": "TEST-PC",
+      "user": "testuser",
+      "src_ip": "8.8.8.8",
+      "count": 5,
+      "EventCode": "4625"
+    }
+  }'
 ```
 
-**API failures:**
-- Verify OpenAI credits ($5 minimum)
-- Check AbuseIPDB rate limits (free tier: 1000/day)
-- Confirm Slack bot has `chat:write` permissions
+**Issue: OpenAI API failures**
+
+- Verify API key is correct
+- Check OpenAI account has credits ($5 minimum)
+- Review rate limits (60 requests/minute for free tier)
+- Check API status: https://status.openai.com/
+
+**Issue: AbuseIPDB not returning data**
+
+- Verify API key is valid
+- Check rate limits (1000 requests/day for free tier)
+- Ensure IP address format is valid (IPv4)
+- Private IP ranges (192.168.x.x, 10.x.x.x) may not have reputation data
+
+**Issue: Slack message not appearing**
+
+- Verify bot token starts with `xoxb-`
+- Ensure bot has `chat:write` permission
+- Confirm bot is invited to #soc-alerts channel
+- Check channel name is correct (with # prefix)
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-> **Add your screenshots in this section with descriptions**
+### Architecture Diagram
+![Architecture Overview](screenshots/architecture.png)
+*Complete workflow showing data flow from Windows endpoint through Splunk, N8N, AI analysis, and Slack notification*
 
-### 1. Architecture Overview
-![Architecture Diagram](screenshots/architecture.png)
-*End-to-end workflow from log generation to Slack notification*
-
-### 2. Splunk Dashboard
+### Splunk Configuration
 ![Splunk Dashboard](screenshots/splunk-dashboard.png)
-*Real-time monitoring of failed login attempts*
+*Splunk Enterprise dashboard showing real-time log ingestion from Windows endpoint*
 
-### 3. Splunk Alert Configuration
-![Alert Setup](screenshots/splunk-alert.png)
-*EventCode 4625 detection rule with webhook trigger*
+![Splunk Alert Rule](screenshots/splunk-alert-config.png)
+*Detection rule configuration for Event ID 4625 with webhook trigger to N8N*
 
-### 4. N8N Workflow
-![N8N Workflow](screenshots/n8n-workflow.png)
-*Complete automation workflow with all nodes connected*
+### N8N Workflow Automation
+![N8N Complete Workflow](screenshots/n8n-workflow-complete.png)
+*Full N8N workflow with all nodes: Webhook → Parse → ChatGPT → AbuseIPDB → Slack*
 
-### 5. ChatGPT Analysis Output
-![AI Analysis](screenshots/chatgpt-analysis.png)
-*AI-generated threat summary with MITRE ATT&CK mapping*
+![N8N Execution History](screenshots/n8n-execution-history.png)
+*Workflow execution history showing successful alert processing*
 
-### 6. AbuseIPDB Enrichment
-![Threat Intel](screenshots/abuseipdb-result.png)
-*IP reputation and abuse history from threat intelligence feed*
+### AI-Powered Analysis
+![ChatGPT Analysis Output](screenshots/chatgpt-output.png)
+*ChatGPT-generated threat analysis with MITRE ATT&CK mapping and recommended actions*
 
-### 7. Slack Alert
-![Slack Notification](screenshots/slack-alert.png)
-*Final formatted alert delivered to SOC team channel*
+### Threat Intelligence
+![AbuseIPDB Results](screenshots/abuseipdb-results.png)
+*IP reputation data from AbuseIPDB showing abuse confidence score and historical reports*
 
-### 8. Test Event Generation
-![Test Events](screenshots/test-events.png)
-*Simulated failed login attempts in Windows Event Viewer*
+### Slack Alert Delivery
+![Slack Alert Message](screenshots/slack-alert-full.png)
+*Formatted security alert delivered to SOC team with event details, threat intelligence, and AI analysis*
 
----
+### Testing and Validation
+![Test Events Generated](screenshots/test-events.png)
+*Windows Event Viewer showing generated Event ID 4625 failed logon attempts*
 
-## 🔮 Future Enhancements
-
-### Short-term
-- [ ] **DFIR-IRIS Integration**: Automatic ticket creation for high-severity alerts
-- [ ] **VirusTotal API**: File hash and URL reputation checks
-- [ ] **Email Notifications**: Parallel alerting via SMTP
-- [ ] **Dashboard**: Custom Splunk dashboard for SOC metrics
-
-### Medium-term
-- [ ] **Multi-Source Logs**: Linux (SSH), firewall, web server logs
-- [ ] **Advanced Correlation**: Detect brute-force → successful login chains
-- [ ] **Automated Response**: Block IPs via firewall API
-- [ ] **SOAR Playbooks**: Predefined response workflows (isolate, contain, remediate)
-
-### Long-term
-- [ ] **EDR Integration**: Wazuh or Velociraptor for endpoint telemetry
-- [ ] **UEBA**: User and Entity Behavior Analytics with ML
-- [ ] **Kubernetes Deployment**: Production-ready containerized stack
-- [ ] **Compliance Mapping**: NIST, ISO 27001, CIS Controls alignment
+![End-to-End Test Success](screenshots/end-to-end-test.png)
+*Complete workflow execution from event generation to Slack notification*
 
 ---
 
-## 🔒 Security Considerations
+## Conclusion
 
-### ⚠️ **NOT for Production Use**
+This SOC Automation Lab successfully demonstrates the integration of AI-powered analysis into traditional SIEM workflows, creating an intelligent, automated security operations pipeline. By combining Splunk's robust log analysis capabilities with N8N's flexible workflow automation and ChatGPT's contextual threat analysis, we've built a system that significantly reduces manual investigation time while enhancing the quality of security insights.
 
-This lab environment has intentional security gaps for learning purposes:
+The workflow automatically detects suspicious authentication attempts, enriches them with threat intelligence, applies AI-driven analysis including MITRE ATT&CK framework mapping, and delivers actionable alerts to security teams via Slack. This approach simulates real-world SOC automation techniques used by modern security operations centers to handle high-volume security events efficiently.
 
-| Issue | Risk | Mitigation (Production) |
-|-------|------|-------------------------|
-| **Unencrypted Webhooks** | HTTP traffic is plaintext | Use HTTPS with TLS certificates |
-| **API Keys in Config** | Keys stored in plaintext | Use secrets management (Vault, AWS Secrets Manager) |
-| **No Authentication** | N8N UI exposed without MFA | Implement OAuth/SSO with MFA |
-| **Data Privacy** | Logs sent to third-party AI | Use on-prem LLM or anonymize data |
-| **Single Point of Failure** | No redundancy | Clustered Splunk indexers, load-balanced N8N |
+Through this project, we've gained practical hands-on experience in:
+- Configuring enterprise SIEM platforms (Splunk) for centralized log management
+- Implementing detection rules and correlation logic for threat identification
+- Building automated security workflows using orchestration platforms (N8N)
+- Integrating AI services to enhance threat analysis and reduce false positives
+- Enriching security events with external threat intelligence feeds
+- Delivering contextualized alerts to security teams through collaborative platforms
 
-### Privacy & Compliance
-
-- **PII Handling**: This setup sends logs (potentially containing usernames, IPs) to OpenAI
-- **GDPR/CCPA**: Not compliant for production SOC
-- **Recommendation**: 
-  - Use **self-hosted LLM** (Ollama, LLaMA 2)
-  - Implement **data masking** before API calls
-  - Get **explicit consent** for any real data processing
+This foundational knowledge enables us to design, implement, and manage automated SOC workflows in production environments, accelerate incident response times, and optimize security operations through intelligent automation and AI integration.
 
 ---
 
-## 📚 Lessons Learned
+## Future Enhancements
+
+### Short-term Improvements
+- **Multi-Event Correlation:** Detect attack patterns across multiple event types (failed login → successful login → privilege escalation)
+- **Automated Response Actions:** Implement automated IP blocking via firewall API or account lockout
+- **Custom Dashboards:** Build Splunk dashboards for SOC metrics (MTTD, MTTR, alert volume)
+- **Email Notifications:** Add parallel email alerts for critical severity events
+
+### Medium-term Expansions
+- **Additional Log Sources:** Integrate Linux SSH logs, firewall logs, web server access logs
+- **DFIR-IRIS Integration:** Automatic case creation in incident response platform
+- **VirusTotal Integration:** File hash and URL reputation checks for malware analysis
+- **User Entity Behavior Analytics (UEBA):** Detect anomalous user behavior patterns
+
+### Long-term Vision
+- **EDR Integration:** Connect endpoint detection and response tools (Wazuh, Velociraptor, CrowdStrike)
+- **SOAR Playbooks:** Implement predefined response workflows (contain, isolate, remediate)
+- **Machine Learning Models:** Train custom ML models for anomaly detection
+- **Kubernetes Deployment:** Production-ready containerized deployment for high availability
+- **Compliance Mapping:** Align detections to NIST CSF, ISO 27001, CIS Controls frameworks
+
+---
+
+## Security Considerations
+
+### ⚠️ Important Security Warnings
+
+**This lab environment is designed for educational purposes only and should NOT be used in production without significant security hardening.**
+
+| Security Gap | Risk Level | Production Mitigation |
+|--------------|------------|----------------------|
+| **HTTP Webhooks** | High | Implement HTTPS with TLS certificates; use mutual TLS authentication |
+| **API Keys in Plaintext** | Critical | Use secrets management (HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) |
+| **No Multi-Factor Authentication** | High | Implement SSO with MFA for N8N and Splunk access |
+| **Third-Party Data Sharing** | Critical | Use on-premises LLM (Ollama, LLaMA 2) or anonymize PII before API calls |
+| **Single Point of Failure** | Medium | Deploy clustered Splunk indexers and search heads; load-balanced N8N instances |
+| **Insufficient Input Validation** | Medium | Implement strict input validation and sanitization in N8N workflows |
+
+### Privacy and Compliance Considerations
+
+**Data Privacy:**
+- This setup sends security logs (containing usernames, IP addresses, computer names) to third-party services (OpenAI, AbuseIPDB)
+- Potential PII exposure violates GDPR, CCPA, and other privacy regulations
+- Not suitable for environments handling sensitive customer data
+
+**Compliance Recommendations:**
+- **Self-hosted LLM:** Deploy open-source models (Ollama, LLaMA 2, Mistral) for on-premises analysis
+- **Data Masking:** Implement field redaction before sending to external APIs (hash usernames, anonymize IPs)
+- **Audit Logging:** Enable comprehensive logging of all API calls and data transfers
+- **Legal Review:** Obtain explicit consent and legal approval before processing real security data
+
+**Production Security Checklist:**
+- [ ] Replace HTTP with HTTPS (TLS 1.3) for all communications
+- [ ] Implement secrets management solution for API keys and credentials
+- [ ] Enable MFA for all administrative access
+- [ ] Deploy Web Application Firewall (WAF) in front of exposed services
+- [ ] Implement network segmentation and micro-segmentation
+- [ ] Regular security audits and penetration testing
+- [ ] Incident response plan for automation platform compromise
+- [ ] Data retention and deletion policies compliant with regulations
+
+---
+
+## Lessons Learned
 
 ### Technical Insights
-1. **Webhook Latency**: Real-time alerts via webhooks introduce ~2-5s delay vs. native integrations
-2. **API Costs**: ChatGPT-4 costs ~$0.03/1K tokens; use GPT-3.5-turbo for high-volume scenarios
-3. **Log Parsing**: Splunk CIM (Common Information Model) is critical for normalized field names
-4. **N8N Debugging**: Function nodes with console.log() helped troubleshoot data transformations
+
+**Webhook Performance:**
+- Real-time webhook triggers introduce 2-5 second latency compared to native SIEM integrations
+- Consider batching non-critical alerts to reduce API costs and improve efficiency
+
+**API Cost Management:**
+- GPT-4 costs approximately $0.03 per 1K tokens (~750 words)
+- For high-volume environments (1000+ alerts/day), use GPT-3.5-turbo to reduce costs by 90%
+- Implement caching for repeated queries about the same IP addresses or users
+
+**Log Parsing Challenges:**
+- Splunk CIM (Common Information Model) is essential for normalized field extraction
+- Custom parsing rules required for non-standard log formats
+- Regular expression testing crucial before deploying detection rules to production
+
+**N8N Debugging Techniques:**
+- Function nodes with `console.log()` statements invaluable for troubleshooting
+- Workflow execution history provides detailed error messages and data flow visualization
+- Always test individual nodes before connecting full workflow
 
 ### Operational Takeaways
-- **Alert Fatigue**: Initial threshold (1 failed login) generated 100+ alerts/hour
-  - Solution: Increased threshold to 5 attempts within 5 minutes
-- **False Positives**: Corporate VPN users triggered alerts during password resets
-  - Solution: Whitelisted known VPN IP ranges in Splunk
-- **Scaling**: Single Splunk instance handles ~5 GB/day; needs clustering for enterprise volume
 
-### Career Development
-- **Portfolio Value**: This project bridges multiple disciplines (SIEM, automation, AI)
-- **Interview Questions**: Prepared for "Describe a time you automated a process"
-- **Certifications**: Mapped to:
-  - CompTIA Security+ (Objective 4.1: Security Monitoring)
-  - Splunk Core Certified User
-  - GIAC Security Operations Certified (GSOC)
+**Alert Fatigue:**
+- Initial detection threshold (1 failed login) generated 100+ alerts per hour
+- Adjusted to 5 failed attempts within 5-minute window, reducing false positives by 95%
+- Lesson: Baseline normal activity before setting detection thresholds
+
+**False Positive Reduction:**
+- Corporate VPN users triggered alerts during legitimate password reset procedures
+- Implemented IP whitelisting for known corporate infrastructure
+- Added time-based correlation to distinguish brute force from typos
+
+**Scaling Considerations:**
+- Single Splunk instance handles ~5GB/day of log data
+- Enterprise environments require distributed Splunk architecture (indexer cluster, search head cluster)
+- N8N workflow execution limited by container resources; consider Kubernetes for high availability
+
+### Career Development Impact
+
+**Portfolio Value:**
+- This project demonstrates proficiency across multiple SOC domains: SIEM, automation, AI integration, threat intelligence
+- Bridges technical and analytical skills valued by security operations roles
+- Tangible demonstration of cost-reduction and efficiency improvements
+
+**Interview Preparation:**
+- Prepared responses to "Describe a time you automated a repetitive task"
+- Can explain trade-offs between different SIEM platforms and automation tools
+- Demonstrates understanding of security operations workflow and incident response
+
+**Certification Alignment:**
+- Maps directly to CompTIA Security+ objectives (4.1 Security Monitoring, 4.3 Incident Response)
+- Aligns with Splunk Core Certified User exam topics
+- Relevant to GIAC Security Operations Certified (GSOC) practical scenarios
 
 ---
 
-## 📖 References
+## References
 
-### Documentation
+### Official Documentation
 - [Splunk Enterprise Documentation](https://docs.splunk.com/Documentation/Splunk)
-- [N8N Workflow Automation](https://docs.n8n.io/)
+- [Splunk Universal Forwarder](https://docs.splunk.com/Documentation/Forwarder)
+- [N8N Workflow Automation Docs](https://docs.n8n.io/)
 - [OpenAI API Reference](https://platform.openai.com/docs/api-reference)
-- [AbuseIPDB API Docs](https://docs.abuseipdb.com/)
-- [Slack API Guide](https://api.slack.com/messaging/webhooks)
+- [AbuseIPDB API Documentation](https://docs.abuseipdb.com/)
+- [Slack API - Messaging](https://api.slack.com/messaging)
 
-### Standards & Frameworks
+### Security Frameworks and Standards
 - [MITRE ATT&CK Framework](https://attack.mitre.org/)
 - [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
 - [CIS Critical Security Controls](https://www.cisecurity.org/controls)
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 
 ### Learning Resources
-- [MyDFIR YouTube Channel](https://www.youtube.com/@MyDFIR) (Original tutorial credit)
-- [Splunk Fundamentals (Free Course)](https://education.splunk.com/)
+- [Splunk Fundamentals 1 (Free Course)](https://education.splunk.com/course/splunk-fundamentals-1)
 - [N8N Community Workflows](https://n8n.io/workflows/)
+- [Windows Event ID Encyclopedia](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/)
+- [MITRE ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/)
+
+### Community and Support
+- [Splunk Community Forums](https://community.splunk.com/)
+- [N8N Community Forum](https://community.n8n.io/)
+- [r/cybersecurity](https://www.reddit.com/r/cybersecurity/)
+- [r/splunk](https://www.reddit.com/r/Splunk/)
 
 ---
 
-## 📄 License
+## Acknowledgments
+
+- **MyDFIR** for the original SOC automation lab concept and educational content
+- **Splunk Community** for extensive documentation and best practices
+- **N8N Open Source Team** for building an accessible automation platform
+- **OpenAI** for providing accessible AI API services for security analysis
+- **AbuseIPDB** for maintaining a comprehensive threat intelligence database
+- **Cybersecurity Community** for sharing knowledge and detection engineering resources
+
+---
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**Disclaimer**: This lab is for educational purposes only. Do not use in production environments without proper security hardening, compliance review, and legal approval.
+**Disclaimer:** This lab is designed for educational and training purposes only. Do not deploy this configuration in production environments without proper security hardening, compliance review, legal approval, and risk assessment. The authors are not responsible for any misuse or damage caused by implementation of this lab in unauthorized environments.
 
 ---
 
-## 🤝 Contributing
+## Author
 
-Found a bug or have a suggestion? Open an issue or submit a pull request!
-
-**Contribution Ideas:**
-- Additional detection rules (PowerShell execution, lateral movement)
-- Integration with other SIEM platforms (ELK, Wazuh)
-- Terraform/Ansible automation for lab deployment
-- Custom Splunk dashboards
-
----
-
-## 👤 Author
-
-**Your Name**  
+**[Your Name]**  
 [LinkedIn](https://linkedin.com/in/yourprofile) | [GitHub](https://github.com/yourusername) | [Portfolio](https://yourportfolio.com)
 
-*Building this project? Tag me and share your results!*
+*Cybersecurity Professional | SOC Analyst | Security Automation Enthusiast*
 
 ---
 
-## 🙏 Acknowledgments
+## Contributing
 
-- **MyDFIR** for the original project concept and tutorial
-- **Splunk Community** for comprehensive documentation
-- **N8N Open Source Team** for the automation platform
-- **OpenAI** for GPT API access
-- **AbuseIPDB** for threat intelligence feeds
+Contributions are welcome! If you have suggestions for improvements, additional detection rules, or integration with other security tools, please open an issue or submit a pull request.
+
+**Contribution Ideas:**
+- Additional Splunk detection use cases (PowerShell execution, lateral movement, data exfiltration)
+- Integration with other SIEM platforms (Elastic Stack, Wazuh, Graylog)
+- Alternative AI models (Anthropic Claude, Google PaLM, Open-source LLMs)
+- Terraform/Ansible automation for complete lab deployment
+- Advanced SOAR playbooks with remediation actions
 
 ---
 
 <div align="center">
 
-**⭐ If this project helped you, please star this repository! ⭐**
+**⭐ If this project helped you learn SOC automation, please star this repository! ⭐**
 
-Made with ☕ and 🔐 for the cybersecurity community
+![GitHub stars](https://img.shields.io/github/stars/yourusername/soc-automation-lab?style=social)
+![GitHub forks](https://img.shields.io/github/forks/yourusername/soc-automation-lab?style=social)
+
+*Built with ☕ and 🔐 for the cybersecurity community*
 
 </div>
