@@ -2,10 +2,6 @@
 
 An end-to-end Security Operations Center (SOC) automation workflow that demonstrates real-world SIEM integration, threat detection, and AI-enhanced incident response. This project showcases proficiency in security monitoring, automation engineering, and modern DevSecOps practices.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/Platform-VMware%20%7C%20VirtualBox-blue)]()
-[![SIEM](https://img.shields.io/badge/SIEM-Splunk-green)]()
-
 ---
 
 ## 📋 Table of Contents
@@ -38,92 +34,30 @@ An end-to-end Security Operations Center (SOC) automation workflow that demonstr
 
 This project demonstrates an automated SOC workflow that:
 
-1. **Collects** Windows security logs from a monitored endpoint
-2. **Detects** suspicious activities using Splunk SIEM
-3. **Triggers** automated workflows via N8N
-4. **Analyzes** threats using ChatGPT API with MITRE ATT&CK mapping
-5. **Enriches** IOCs using threat intelligence feeds (AbuseIPDB)
-6. **Notifies** security teams via Slack with actionable insights
+1. **Collects** Windows security logs from a monitored endpoint.
+2. **Detects** suspicious activities using Splunk SIEM.
+3. **Triggers** automated workflows via N8N.
+4. **Analyzes** threats using ChatGPT API with MITRE ATT&CK mapping.
+5. **Enriches** IOCs using threat intelligence feeds (AbuseIPDB).
+6. **Notifies** security teams via Slack with actionable insights.
 
 **Real-World Application:** Reduces mean time to detect (MTTD) and mean time to respond (MTTR) by automating tier-1 analyst tasks, allowing SOC teams to focus on complex investigations.
 
 ---
 
 ## 🏗️ Architecture
-
-```
-┌─────────────────┐
-│   Windows 10    │
-│   (Endpoint)    │
-│                 │
-│  Event Logs:    │
-│  - Security     │
-│  - System       │
-│  - Application  │
-└────────┬────────┘
-         │
-         │ Splunk Universal Forwarder
-         │ Port: 9997
-         │
-         ▼
-┌─────────────────┐
-│  Splunk SIEM    │
-│  (Ubuntu VM)    │
-│                 │
-│  - Log ingestion│
-│  - Correlation  │
-│  - Alert Rules  │
-└────────┬────────┘
-         │
-         │ Webhook Trigger
-         │ (EventCode 4625 - Failed Login)
-         │
-         ▼
-┌─────────────────┐
-│   N8N Workflow  │
-│   (Ubuntu VM)   │
-│                 │
-│  Orchestration: │
-│  ┌──────────┐   │
-│  │ Webhook  │   │
-│  └────┬─────┘   │
-│       │         │
-│       ▼         │
-│  ┌──────────┐   │
-│  │ ChatGPT  │   │
-│  │ Analysis │   │
-│  └────┬─────┘   │
-│       │         │
-│       ▼         │
-│  ┌──────────┐   │
-│  │AbuseIPDB │   │
-│  │   API    │   │
-│  └────┬─────┘   │
-│       │         │
-│       ▼         │
-│  ┌──────────┐   │
-│  │  Slack   │   │
-│  │  Alert   │   │
-│  └──────────┘   │
-└─────────────────┘
-         │
-         ▼
-    📱 Slack Channel
-    (Formatted Alert)
-```
-
+ 
 ---
 
 ## ✨ Features
 
-- ✅ **Real-Time Threat Detection**: Monitors Windows security events (Event ID 4625 - Failed Logon Attempts)
-- ✅ **Automated Incident Response**: Zero-touch workflow from detection to notification
-- ✅ **AI-Powered Analysis**: ChatGPT provides context-aware threat summaries and MITRE ATT&CK mapping
-- ✅ **Threat Intelligence Enrichment**: Automated IP reputation checks via AbuseIPDB
-- ✅ **Collaborative Alerts**: Formatted Slack notifications with severity scoring and recommended actions
-- ✅ **Scalable Architecture**: Containerized N8N deployment for easy replication
-- ✅ **Cost-Effective**: Uses open-source tools and minimal API costs (~$5)
-
+- ✅ **Real-Time Threat Detection**: Monitors Windows security events (Event ID 4625 - Failed Logon Attempts).
+- ✅ **Automated Incident Response**: Zero-touch workflow from detection to notification.
+- ✅ **AI-Powered Analysis**: ChatGPT provides context-aware threat summaries and MITRE ATT&CK mapping.
+- ✅ **Threat Intelligence Enrichment**: Automated IP reputation checks via AbuseIPDB.
+- ✅ **Collaborative Alerts**: Formatted Slack notifications with severity scoring and recommended actions.
+- ✅ **Scalable Architecture**: Containerized N8N deployment for easy replication.
+  
 ---
 
 ## 🛠️ Technology Stack
