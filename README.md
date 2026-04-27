@@ -57,14 +57,6 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 
 ---
 
-**Validation Checklist:**
-
-- [ ] **Splunk receives logs:** Verify in Search & Reporting: `index=mydfir-project EventCode=4625`
-- [ ] **Splunk alert triggers:** Check alert history in Splunk
-- [ ] **N8N webhook receives data:** Check execution history in N8N workflow
-- [ ] **ChatGPT analysis completes:** Verify OpenAI node executed successfully
-- [ ] **AbuseIPDB enrichment works:** Verify HTTP Request node returned data
-- [
 ## Screenshots
 
 ### Architecture Diagram
@@ -72,11 +64,13 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 *Complete workflow showing data flow from Windows endpoint through Splunk, N8N, AI analysis, and Slack notification*
 
 ### Splunk Configuration
-![Splunk Dashboard](screenshots/splunk-dashboard.png)
-*Splunk Enterprise dashboard showing real-time log ingestion from Windows endpoint*
 
-![Splunk Alert Rule](screenshots/splunk-alert-config.png)
+*Splunk Enterprise dashboard showing real-time log ingestion from Windows endpoint*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/beb5b0fb5692b142a67c8775f88c7a77790b1bd8/screenshots/Screenshot%202026-04-27%20111225.png)
+
 *Detection rule configuration for Event ID 4625 with webhook trigger to N8N*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/cd5d95a99869c0ab77c8518c5e47c05b2220ba31/screenshots/Screenshot%202026-04-27%20111527.png)
+
 
 ### N8N Workflow Automation
 ![N8N Complete Workflow](screenshots/n8n-workflow-complete.png)
