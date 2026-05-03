@@ -73,23 +73,34 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 
 
 ### N8N Workflow Automation
-![N8N Complete Workflow](screenshots/n8n-workflow-complete.png)
-*Full N8N workflow with all nodes: Webhook → Parse → ChatGPT → AbuseIPDB → Slack*
 
-![N8N Execution History](screenshots/n8n-execution-history.png)
-*Workflow execution history showing successful alert processing*
+*Full N8N workflow with all nodes with successful execution*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/d3eaa66fb64c3295308b07f58bfef966dc74bb44/screenshots/Screenshot%202026-05-02%20194738.png)
+
 
 ### AI-Powered Analysis
 ![ChatGPT Analysis Output](screenshots/chatgpt-output.png)
 *ChatGPT-generated threat analysis with MITRE ATT&CK mapping and recommended actions*
 
 ### Threat Intelligence
-![AbuseIPDB Results](screenshots/abuseipdb-results.png)
-*IP reputation data from AbuseIPDB showing abuse confidence score and historical reports*
+
+*IP reputation data from AbuseIPDB*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/cd4e5584f6547304175f2eea20b443b36d31644c/screenshots/Screenshot%202026-05-02%20195358.png)
+
+
+*File hash analysis via VirusTotal*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/7a523633536720a3ebabafea87a91f2a4d212cae/screenshots/Screenshot%202026-05-02%20195801.png)
+
+### DFIR IRIS Alert Ingestion
+
+*Enriched security alert forwarded to DFIR IRIS for centralized case management with event context*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/c9e52bca6501307345d44267c0cc399617f9660a/screenshots/Screenshot%202026-05-02%20182824.png)
 
 ### Slack Alert Delivery
-![Slack Alert Message](screenshots/slack-alert-full.png)
-*Formatted security alert delivered to SOC team with event details, threat intelligence, and AI analysis*
+
+*Formatted security alert delivered to SOC team with event details, MITRE ATT&CK mapping, threat intelligence and AI analysis*
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/7289d0089ff91f99538097adeecbe3a7334a9894/screenshots/Screenshot%202026-04-27%20125337.png)
+
 
 ### Testing and Validation
 ![Test Events Generated](screenshots/test-events.png)
