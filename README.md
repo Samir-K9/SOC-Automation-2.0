@@ -82,58 +82,60 @@ The stack combines Splunk for log analysis, N8N for automation, ChatGPT for cont
 ![Architecture Overview](screenshots/architecture.png)
 *End-to-end workflow from endpoint logs to Splunk, N8N automation, AI analysis, threat intelligence, case management, and Slack notifications*
 
+---
+
 ### Splunk Configuration
 
-*Splunk showing real-time log ingestion from Windows endpoints*
-![Image Alt](link)
+*Splunk showing real-time log ingestion from Windows endpoints*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/beb5b0fb5692b142a67c8775f88c7a77790b1bd8/screenshots/Screenshot%202026-04-27%20111225.png)
 
-*Detection rule for failed logins with webhook trigger to N8N*
-![Image Alt](link)
+*Detection rule for failed logins with webhook trigger to N8N*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/cd5d95a99869c0ab77c8518c5e47c05b2220ba31/screenshots/Screenshot%202026-04-27%20111527.png)
 
 ---
 
 ### N8N Workflow
 
-*Full automation workflow handling parsing, enrichment, AI analysis, and alerting*
-![Image Alt](link)
+*Full automation workflow handling parsing, enrichment, AI analysis, and alerting*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/d3eaa66fb64c3295308b07f58bfef966dc74bb44/screenshots/Screenshot%202026-05-02%20194738.png)
 
 ---
 
 ### AI Analysis
 
-*ChatGPT output showing threat context and MITRE ATT&CK mapping*
-![Image Alt](screenshots/chatgpt-output.png)
+*ChatGPT output showing threat context and MITRE ATT&CK mapping*  
+![ChatGPT Analysis Output](screenshots/chatgpt-output.png)
 
 ---
 
 ### Threat Intelligence
 
-*AbuseIPDB IP reputation results showing abuse score and history*
-![Image Alt](link)
+*AbuseIPDB IP reputation results showing abuse score and history*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/cd4e5584f6547304175f2eea20b443b36d31644c/screenshots/Screenshot%202026-05-02%20195358.png)
 
-*VirusTotal analysis showing malware detection across engines*
-![Image Alt](link)
+*VirusTotal analysis showing malware detection across engines*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/7a523633536720a3ebabafea87a91f2a4d212cae/screenshots/Screenshot%202026-05-02%20195801.png)
 
 ---
 
 ### DFIR-IRIS Case Management
 
-*Incident automatically created in DFIR-IRIS with enriched context and timeline*
-![Image Alt](link)
+*Incident automatically created in DFIR-IRIS with enriched context and timeline*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/c9e52bca6501307345d44267c0cc399617f9660a/screenshots/Screenshot%202026-05-02%20182824.png)
 
 ---
 
 ### Slack Alert
 
-*SOC alert delivered with full enrichment and AI analysis*
-![Image Alt](link)
+*SOC alert delivered with full enrichment and AI analysis*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/7289d0089ff91f99538097adeecbe3a7334a9894/screenshots/Screenshot%202026-04-27%20125337.png)
 
 ---
 
 ### Conversational SIEM (MCP Server)
 
-*Natural language query returning Splunk results without SPL*
-![Image Alt](link)
+*Natural language query returning Splunk results without SPL*  
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/446dd14d91d5455408aef9ee0b9df2b6301248df/screenshots/Windows%2010%20x64-2026-05-02-19-33-25.png)
 
 ---
 
