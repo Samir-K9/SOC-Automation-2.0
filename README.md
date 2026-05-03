@@ -2,21 +2,27 @@
 
 ## Objective
 
-The SOC Automation Lab project demonstrates the integration of AI-powered threat analysis into traditional SIEM workflows with advanced malware detection, incident case management, and conversational AI capabilities. This project showcases how modern Security Operations Centers can leverage artificial intelligence, multi-source threat intelligence, and automated case management to enhance threat detection, automate incident response, and reduce analyst workload through intelligent automation. By combining Splunk's powerful log analysis capabilities with N8N workflow automation, ChatGPT's contextual analysis, VirusTotal's malware detection, DFIR-IRIS case management, and a custom Splunk MCP server for conversational SIEM querying, this lab simulates enterprise-grade SOC operations with cutting-edge efficiency.
+This project builds an automated SOC workflow that connects Splunk with AI analysis, threat intelligence feeds, malware scanning, and case management.
 
-### Skills Learned
+It focuses on taking a basic SIEM pipeline and extending it with automation and AI so security alerts can be enriched, analyzed, and routed with minimal manual effort. The goal is to show how modern SOCs can reduce repetitive work while improving investigation quality.
 
-- Developed advanced SIEM configuration skills using Splunk Enterprise for centralized log management and correlation.
-- Implemented automated threat detection workflows using N8N, reducing manual investigation time by automating tier-1 analyst tasks.
-- Integrated AI-powered threat analysis using OpenAI's ChatGPT API to provide context-aware security insights and MITRE ATT&CK framework mapping.
-- Enhanced threat intelligence capabilities by incorporating multiple external feeds (AbuseIPDB for IP reputation, VirusTotal for file hash analysis) for comprehensive IOC enrichment.
-- Configured automated incident case management using DFIR-IRIS platform for structured investigation workflows and evidence tracking.
-- Utilized Atomic Red Team to simulate realistic attack scenarios and validate detection rule effectiveness.
--  Implemented MCP (Model Context Protocol) server (livehybrid/splunk-mcp) to enable conversational AI querying of SIEM data through Claude Desktop, eliminating the need for complex SPL syntax.
-- Configured collaborative incident response workflows using Slack API for real-time security team notifications.
-- Gained hands-on experience in orchestrating multi-platform security automation across Windows endpoints, Linux servers, cloud-based AI services, and case management platforms.
-- Improved proficiency in containerization technologies (Docker) for deploying scalable automation platforms.
-- Developed custom integration solutions combining multiple security APIs into unified automation workflows.
+The stack combines Splunk for log analysis, N8N for automation, ChatGPT for contextual threat analysis, VirusTotal for malware detection, DFIR-IRIS for case management, and a Splunk MCP server for natural language SIEM queries.
+
+---
+
+## Skills Learned
+
+- Configured Splunk Enterprise for centralized log collection and correlation  
+- Built automated detection workflows in N8N to reduce manual Tier 1 alert triage  
+- Used ChatGPT API for threat summaries and MITRE ATT&CK mapping  
+- Enriched alerts using AbuseIPDB and VirusTotal for IP and file reputation data  
+- Set up DFIR-IRIS for structured incident tracking and investigation workflows  
+- Used Atomic Red Team to generate attack simulations and validate detections  
+- Implemented a Splunk MCP server (livehybrid/splunk-mcp) for natural language querying in Claude Desktop  
+- Built Slack integrations for real-time alerting to a SOC channel  
+- Connected Windows, Linux, and cloud services into one automated workflow  
+- Deployed N8N using Docker and managed the automation stack  
+- Integrated multiple security APIs into a single workflow pipeline  
 
 ---
 
@@ -24,49 +30,49 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 
 ### Hardware Requirements
 
-- A host machine with minimum 16GB RAM (32GB recommended) to support multiple VMs and their anticipated workloads.
-- 4+ CPU cores with virtualization enabled.
-- 200GB free disk space for VM storage.
+- A system with at least 16GB RAM (32GB preferred if running multiple VMs)  
+- 4+ CPU cores with virtualization enabled  
+- Around 200GB of free storage for virtual machines  
 
 ### Software Requirements
 
 | Software | Description |
 |----------|-------------|
-| **VMware Workstation Pro / VirtualBox** | Hypervisor platform for creating and managing virtual machines. |
-| **Windows 10** | Client endpoint used to generate security event logs and simulate real-world threat scenarios. |
-| **Ubuntu Server 22.04** | Linux distribution for hosting Splunk SIEM, N8N automation server and DFIR-IRIS for case management. |
-| **Splunk Universal Forwarder** | Agent that collects and forwards Windows logs to the Splunk indexer. |
-| **Claude Desktop** | AI assistant application for conversational SIEM querying via custom MCP server. |
+| VMware Workstation Pro / VirtualBox | Used to run virtual machines |
+| Windows 10 | Endpoint to generate security logs and simulate activity |
+| Ubuntu Server 22.04 | Hosts Splunk, N8N, and DFIR-IRIS |
+| Splunk Universal Forwarder | For forwarding logs from endpoints |
+| Claude Desktop | Used for natural language SIEM queries through MCP |
 
 ### Tools and Platforms
 
 | Tool | Description |
 |------|-------------|
-| **Splunk Enterprise** | Security Information and Event Management (SIEM) platform for log aggregation, correlation, and alerting. |
-| **N8N** | Open-source workflow automation platform (SOAR-like capabilities) for orchestrating security response workflows. |
-| **OpenAI ChatGPT API** | AI-powered analysis engine providing context-aware threat summaries and MITRE ATT&CK technique mapping. |
-| **AbuseIPDB** | Threat intelligence platform providing IP reputation data and abuse confidence scoring. |
-| **VirusTotal** | Malware detection and file reputation platform analyzing files across 70+ antivirus engines. |
-| **DFIR-IRIS** | Digital Forensics and Incident Response platform for case management and investigation tracking. |
-| **Splunk MCP Server** | Model Context Protocol server (livehybrid/splunk-mcp) enabling conversational AI access to Splunk SIEM data through Claude Desktop. |
-| **Atomic Red Team** | Open-source library of tests mapped to MITRE ATT&CK framework used to generate realistic attack telemetry for testing detection rules. |
-| **Slack** | Collaborative messaging platform for delivering formatted security alerts to SOC teams. |
-| **Docker & Docker Compose** | Container runtime for deploying and managing the N8N automation server. |
+| Splunk Enterprise | SIEM used for log ingestion and correlation |
+| N8N | Workflow automation tool used for SOC automation |
+| OpenAI ChatGPT API | Provides AI-based threat analysis |
+| AbuseIPDB | IP reputation and abuse scoring |
+| VirusTotal | File and hash malware analysis |
+| DFIR-IRIS | Incident response and case management platform |
+| Splunk MCP Server | Enables natural language querying of Splunk |
+| Atomic Red Team | Attack simulation framework |
+| Slack | Used for SOC alert notifications |
+| Docker & Docker Compose | Used to deploy N8N and supporting services |
 
 ---
 
 ## Workflow Overview
 
-- **Log Generation:** Windows 10 endpoint generates security event logs (Event ID 4625 - Failed Logon Attempts) captured by Windows Event Logging.
-- **Log Forwarding:** Splunk Universal Forwarder collects Security, System, and Application logs and forwards them to Splunk indexer over port 9997.
-- **Alert Triggering:** Splunk SIEM correlates events based on custom detection rules and triggers webhook alerts to N8N when suspicious activity is detected.
-- **Workflow Orchestration:** N8N receives alert via webhook, parses relevant data (IP addresses, usernames, file hashes), and initiates automated response workflow.
-- **AI Analysis:** ChatGPT API analyzes the security event, provides threat context, severity assessment, and maps to MITRE ATT&CK techniques.
-- **IP Threat Intelligence Enrichment:** AbuseIPDB API enriches source IP addresses with reputation scores, abuse history, and geolocation data.
-- **File Hash Analysis:** VirusTotal API analyzes file hashes (SHA256) for malware detection across multiple antivirus engines and provides community reputation scores.
-- **Case Management:** DFIR-IRIS automatically creates incident response cases with all enriched data, IOCs, and investigation context for centralized tracking.
-- **Incident Notification:** Formatted alert with AI analysis, threat intelligence, malware analysis results, and DFIR-IRIS case reference is delivered to Slack channel for SOC analyst review and action.
-- **Conversational SIEM Querying:** Custom Splunk MCP server enables security analysts to query SIEM data using natural language through Claude Desktop, eliminating the need for complex SPL syntax and accelerating investigation workflows.
+- Windows 10 generates authentication logs, including failed login attempts  
+- Splunk Universal Forwarder sends logs to the Splunk indexer over port 9997  
+- Splunk detects suspicious activity using correlation rules and triggers a webhook  
+- N8N receives the alert and starts an automated workflow  
+- ChatGPT analyzes the event and provides context, severity, and MITRE mapping  
+- AbuseIPDB checks the source IP reputation and historical abuse data  
+- VirusTotal scans any related file hashes for malware detection  
+- DFIR-IRIS creates a structured incident case with all enriched data  
+- Slack receives a formatted alert with analysis and investigation context  
+- Analysts can query Splunk using natural language through the MCP server instead of SPL  
 
 ---
 
@@ -74,86 +80,75 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 
 ### Architecture Diagram
 ![Architecture Overview](screenshots/architecture.png)
-*Complete workflow showing data flow from Windows endpoint through Splunk, N8N, AI analysis, threat intelligence, malware detection, case management, and Slack notification*
+*End-to-end workflow from endpoint logs to Splunk, N8N automation, AI analysis, threat intelligence, case management, and Slack notifications*
 
 ### Splunk Configuration
 
-*Splunk Enterprise dashboard showing real-time log ingestion from Windows endpoint*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/beb5b0fb5692b142a67c8775f88c7a77790b1bd8/screenshots/Screenshot%202026-04-27%20111225.png)
+*Splunk showing real-time log ingestion from Windows endpoints*
+![Image Alt](link)
 
-*Detection rule configuration for Event ID 4625 with webhook trigger to N8N*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/cd5d95a99869c0ab77c8518c5e47c05b2220ba31/screenshots/Screenshot%202026-04-27%20111527.png)
+*Detection rule for failed logins with webhook trigger to N8N*
+![Image Alt](link)
 
+---
 
-### N8N Workflow Automation
+### N8N Workflow
 
-*Full N8N workflow with all nodes: Webhook → Parse → ChatGPT → AbuseIPDB → VirusTotal → DFIR-IRIS → Format → Slack*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/d3eaa66fb64c3295308b07f58bfef966dc74bb44/screenshots/Screenshot%202026-05-02%20194738.png)
+*Full automation workflow handling parsing, enrichment, AI analysis, and alerting*
+![Image Alt](link)
 
+---
 
-### AI-Powered Analysis
-![ChatGPT Analysis Output](screenshots/chatgpt-output.png)
-*ChatGPT-generated threat analysis with MITRE ATT&CK mapping and recommended actions*
+### AI Analysis
+
+*ChatGPT output showing threat context and MITRE ATT&CK mapping*
+![Image Alt](screenshots/chatgpt-output.png)
+
+---
 
 ### Threat Intelligence
 
-*IP reputation data from AbuseIPDB showing abuse confidence score and historical reports*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/cd4e5584f6547304175f2eea20b443b36d31644c/screenshots/Screenshot%202026-05-02%20195358.png)
+*AbuseIPDB IP reputation results showing abuse score and history*
+![Image Alt](link)
 
+*VirusTotal analysis showing malware detection across engines*
+![Image Alt](link)
 
-*File hash analysis via VirusTotal showing malware detection across multiple antivirus engines*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/7a523633536720a3ebabafea87a91f2a4d212cae/screenshots/Screenshot%202026-05-02%20195801.png)
+---
 
 ### DFIR-IRIS Case Management
 
-*Enriched security alert forwarded to DFIR-IRIS for centralized case management with full event context and investigation timeline*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/c9e52bca6501307345d44267c0cc399617f9660a/screenshots/Screenshot%202026-05-02%20182824.png)
+*Incident automatically created in DFIR-IRIS with enriched context and timeline*
+![Image Alt](link)
 
-### Slack Alert Delivery
+---
 
-*Formatted security alert delivered to SOC team with event details, MITRE ATT&CK mapping, IP reputation, malware analysis, DFIR-IRIS case reference, and AI recommendations*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-2.0/blob/7289d0089ff91f99538097adeecbe3a7334a9894/screenshots/Screenshot%202026-04-27%20125337.png)
+### Slack Alert
 
-### Conversational SIEM (Splunk MCP Server)
+*SOC alert delivered with full enrichment and AI analysis*
+![Image Alt](link)
 
-*Natural language query to Splunk via Claude Desktop using custom MCP server integration*
-![Splunk MCP Query](screenshots/splunk-mcp-query.png)
+---
 
-*Structured SIEM results returned through conversational AI interface without requiring SPL syntax*
-![Splunk MCP Results](screenshots/splunk-mcp-results.png)
+### Conversational SIEM (MCP Server)
 
-
-### Testing and Validation
-![Test Events Generated](screenshots/test-events.png)
-*Windows Event Viewer showing generated Event ID 4625 failed logon attempts*
-
-![End-to-End Test Success](screenshots/end-to-end-test.png)
-*Complete workflow execution from event generation to Slack notification with all enrichments*
+*Natural language query returning Splunk results without SPL*
+![Image Alt](link)
 
 ---
 
 ## Conclusion
 
-This advanced SOC Automation Lab successfully demonstrates the integration of AI-powered analysis, multi-source threat intelligence, malware detection, automated case management, and conversational SIEM querying into traditional security workflows. By combining Splunk's robust log analysis capabilities with N8N's flexible workflow automation, ChatGPT's contextual threat analysis, AbuseIPDB's IP reputation data, VirusTotal's malware detection, DFIR-IRIS case management, and an MCP server integration (livehybrid/splunk-mcp) for natural language querying, we've built an enterprise-grade system that significantly reduces manual investigation time while enhancing the quality and depth of security insights.
+This project shows how a traditional SIEM setup can be extended into a more automated SOC workflow using AI and orchestration tools.
 
-The workflow automatically detects suspicious authentication attempts, enriches them with comprehensive threat intelligence from multiple sources, performs malware analysis on associated file hashes, creates structured incident response cases, applies AI-driven analysis including MITRE ATT&CK framework mapping, and delivers actionable alerts to security teams via Slack. Additionally, the custom Splunk MCP server enables security analysts to query SIEM data using natural language, eliminating the learning curve of SPL syntax and accelerating investigation workflows.
+The system detects suspicious activity, enriches it with threat intelligence, runs malware analysis, and builds a structured incident case automatically. On top of that, it allows natural language querying of Splunk data, which makes investigation faster and more accessible.
 
-Through this project, we've gained practical hands-on experience in:
-- Configuring enterprise SIEM platforms (Splunk) for centralized log management
-- Implementing detection rules and correlation logic for threat identification
-- Building complex automated security workflows using orchestration platforms (N8N)
-- Integrating AI services to enhance threat analysis and reduce false positives
-- Enriching security events with multiple external threat intelligence feeds (IP and file-based)
-- Implementing automated malware analysis workflows
-- Deploying incident response case management platforms for investigation tracking
-- Implementing MCP servers for AI-powered conversational access to security data
-- Delivering contextualized alerts to security teams through collaborative platforms
+Building this gave me hands-on experience with SIEM configuration, automation workflows, threat intelligence integration, and AI-assisted security analysis.
 
-This foundational knowledge enables us to design, implement, and manage automated SOC workflows in production environments, accelerate incident response times, optimize security operations through intelligent automation and AI integration, and build custom solutions that bridge the gap between security tools and AI-powered analysis platforms.
+It also helped connect how different security tools can work together instead of operating in isolation, which is closer to how real SOC environments are structured.
 
 ---
 
 <div align="center">
 **Made with:** Splunk 🔍 | N8N ⚡ | ChatGPT 🤖 | AbuseIPDB 🛡️ | VirusTotal 🦠 | DFIR-IRIS 📋 | Claude MCP 💬
-
 </div>
