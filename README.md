@@ -11,7 +11,8 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 - Integrated AI-powered threat analysis using OpenAI's ChatGPT API to provide context-aware security insights and MITRE ATT&CK framework mapping.
 - Enhanced threat intelligence capabilities by incorporating multiple external feeds (AbuseIPDB for IP reputation, VirusTotal for file hash analysis) for comprehensive IOC enrichment.
 - Configured automated incident case management using DFIR-IRIS platform for structured investigation workflows and evidence tracking.
-- Built custom MCP (Model Context Protocol) server to enable conversational AI querying of SIEM data through Claude Desktop, eliminating the need for complex SPL syntax.
+- Utilized Atomic Red Team to simulate realistic attack scenarios and validate detection rule effectiveness.
+-  Implemented MCP (Model Context Protocol) server (livehybrid/splunk-mcp) to enable conversational AI querying of SIEM data through Claude Desktop, eliminating the need for complex SPL syntax.
 - Configured collaborative incident response workflows using Slack API for real-time security team notifications.
 - Gained hands-on experience in orchestrating multi-platform security automation across Windows endpoints, Linux servers, cloud-based AI services, and case management platforms.
 - Improved proficiency in containerization technologies (Docker) for deploying scalable automation platforms.
@@ -24,8 +25,8 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 ### Hardware Requirements
 
 - A host machine with minimum 16GB RAM (32GB recommended) to support multiple VMs and their anticipated workloads.
-- 4+ CPU cores with virtualization enabled (Intel VT-x/AMD-V).
-- 200GB free disk space for VM storage and log retention.
+- 4+ CPU cores with virtualization enabled.
+- 200GB free disk space for VM storage.
 
 ### Software Requirements
 
@@ -33,7 +34,7 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 |----------|-------------|
 | **VMware Workstation Pro / VirtualBox** | Hypervisor platform for creating and managing virtual machines. |
 | **Windows 10** | Client endpoint used to generate security event logs and simulate real-world threat scenarios. |
-| **Ubuntu Server 22.04** | Linux distribution for hosting Splunk SIEM and N8N automation server. |
+| **Ubuntu Server 22.04** | Linux distribution for hosting Splunk SIEM, N8N automation server and DFIR-IRIS for case management. |
 | **Splunk Universal Forwarder** | Agent that collects and forwards Windows logs to the Splunk indexer. |
 | **Claude Desktop** | AI assistant application for conversational SIEM querying via custom MCP server. |
 
@@ -47,7 +48,8 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 | **AbuseIPDB** | Threat intelligence platform providing IP reputation data and abuse confidence scoring. |
 | **VirusTotal** | Malware detection and file reputation platform analyzing files across 70+ antivirus engines. |
 | **DFIR-IRIS** | Digital Forensics and Incident Response platform for case management and investigation tracking. |
-| **Splunk MCP Server** | Custom-built Model Context Protocol server enabling conversational AI access to Splunk SIEM data. |
+| **Splunk MCP Server** | Model Context Protocol server (livehybrid/splunk-mcp) enabling conversational AI access to Splunk SIEM data through Claude Desktop. |
+| **Atomic Red Team** | Open-source library of tests mapped to MITRE ATT&CK framework used to generate realistic attack telemetry for testing detection rules. |
 | **Slack** | Collaborative messaging platform for delivering formatted security alerts to SOC teams. |
 | **Docker & Docker Compose** | Container runtime for deploying and managing the N8N automation server. |
 
@@ -132,7 +134,7 @@ The SOC Automation Lab project demonstrates the integration of AI-powered threat
 
 ## Conclusion
 
-This advanced SOC Automation Lab successfully demonstrates the integration of AI-powered analysis, multi-source threat intelligence, malware detection, automated case management, and conversational SIEM querying into traditional security workflows. By combining Splunk's robust log analysis capabilities with N8N's flexible workflow automation, ChatGPT's contextual threat analysis, AbuseIPDB's IP reputation data, VirusTotal's malware detection, DFIR-IRIS case management, and a custom Splunk MCP server for natural language querying, we've built an enterprise-grade system that significantly reduces manual investigation time while enhancing the quality and depth of security insights.
+This advanced SOC Automation Lab successfully demonstrates the integration of AI-powered analysis, multi-source threat intelligence, malware detection, automated case management, and conversational SIEM querying into traditional security workflows. By combining Splunk's robust log analysis capabilities with N8N's flexible workflow automation, ChatGPT's contextual threat analysis, AbuseIPDB's IP reputation data, VirusTotal's malware detection, DFIR-IRIS case management, and an MCP server integration (livehybrid/splunk-mcp) for natural language querying, we've built an enterprise-grade system that significantly reduces manual investigation time while enhancing the quality and depth of security insights.
 
 The workflow automatically detects suspicious authentication attempts, enriches them with comprehensive threat intelligence from multiple sources, performs malware analysis on associated file hashes, creates structured incident response cases, applies AI-driven analysis including MITRE ATT&CK framework mapping, and delivers actionable alerts to security teams via Slack. Additionally, the custom Splunk MCP server enables security analysts to query SIEM data using natural language, eliminating the learning curve of SPL syntax and accelerating investigation workflows.
 
@@ -144,7 +146,7 @@ Through this project, we've gained practical hands-on experience in:
 - Enriching security events with multiple external threat intelligence feeds (IP and file-based)
 - Implementing automated malware analysis workflows
 - Deploying incident response case management platforms for investigation tracking
-- Developing custom MCP servers for AI-powered conversational access to security data
+- Implementing MCP servers for AI-powered conversational access to security data
 - Delivering contextualized alerts to security teams through collaborative platforms
 
 This foundational knowledge enables us to design, implement, and manage automated SOC workflows in production environments, accelerate incident response times, optimize security operations through intelligent automation and AI integration, and build custom solutions that bridge the gap between security tools and AI-powered analysis platforms.
@@ -152,14 +154,6 @@ This foundational knowledge enables us to design, implement, and manage automate
 ---
 
 <div align="center">
-
-**⭐ If this project helped you learn advanced SOC automation, please star this repository! ⭐**
-
-![GitHub stars](https://img.shields.io/github/stars/yourusername/soc-automation-lab?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/soc-automation-lab?style=social)
-
-*Built with ☕ and 🔐 for the cybersecurity community*
-
 **Made with:** Splunk 🔍 | N8N ⚡ | ChatGPT 🤖 | AbuseIPDB 🛡️ | VirusTotal 🦠 | DFIR-IRIS 📋 | Claude MCP 💬
 
 </div>
