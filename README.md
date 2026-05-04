@@ -103,7 +103,7 @@ The stack combines Splunk for log analysis, N8N for automation, ChatGPT for cont
 
 ### AI Analysis
 
-*ChatGPT output showing threat context and MITRE ATT&CK mapping*  
+*ChatGPT output showing threat context*  
 ![ChatGPT Analysis Output](https://github.com/Samir-K9/SOC-Automation-2.0/blob/fed49dc12fc65091a28e993522a440acbc783344/screenshots/Screenshot%202026-05-03%20181034.png)
 
 ---
