@@ -20,7 +20,6 @@ The stack combines Splunk for log analysis, N8N for automation, ChatGPT for cont
 - Used Atomic Red Team to generate attack simulations and validate detections  
 - Implemented a Splunk MCP server (livehybrid/splunk-mcp) for natural language querying in Claude Desktop  
 - Built Slack integrations for real-time alerting to a SOC channel  
-- Connected Windows, Linux, and cloud services into one automated workflow  
 - Deployed N8N using Docker and managed the automation stack  
 - Integrated multiple security APIs into a single workflow pipeline  
 
