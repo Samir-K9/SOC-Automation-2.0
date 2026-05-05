@@ -12,15 +12,15 @@ The stack combines Splunk for log analysis, N8N for automation, ChatGPT for cont
 
 ## Skills Learned
 
-- Configured Splunk Enterprise for centralized log collection and correlation  
+- Configured Splunk Enterprise for centralized log collection and correlation
+- Deployed N8N using Docker and managed the automation stack  
 - Built automated detection workflows in N8N to reduce manual Tier 1 alert triage  
 - Used ChatGPT API for threat summaries and MITRE ATT&CK mapping  
 - Enriched alerts using AbuseIPDB and VirusTotal for IP and file reputation data  
-- Set up DFIR-IRIS for structured incident tracking and investigation workflows  
+- Set up DFIR-IRIS using Docker for structured incident tracking and investigation workflows  
 - Used Atomic Red Team to generate attack simulations and validate detections  
 - Implemented a Splunk MCP server (livehybrid/splunk-mcp) for natural language querying in Claude Desktop  
 - Built Slack integrations for real-time alerting to a SOC channel  
-- Deployed N8N using Docker and managed the automation stack  
 - Integrated multiple security APIs into a single workflow pipeline  
 
 ---
@@ -56,7 +56,7 @@ The stack combines Splunk for log analysis, N8N for automation, ChatGPT for cont
 | Splunk MCP Server | Enables natural language querying of Splunk |
 | Atomic Red Team | Attack simulation framework |
 | Slack | Used for SOC alert notifications |
-| Docker & Docker Compose | Used to deploy N8N and supporting services |
+| Docker & Docker Compose | Used to deploy N8N and DFIR-IRIS |
 
 ---
 
