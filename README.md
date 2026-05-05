@@ -80,7 +80,7 @@ The stack combines Splunk for log analysis, N8N for automation, ChatGPT for cont
 ### Architecture Diagram
 
 *End-to-end workflow from endpoint logs to Splunk, N8N automation, AI analysis, threat intelligence, case management, and Slack notifications*
-![Image Alt](https://github.com/Samir-K9/SOC-Automation-Lab-AI-Integration/blob/b029d211d2848656aef13fae366d565816dd55f2/screenshots/Screenshot%202026-05-05%20113623.png)
+![Image Alt](https://github.com/Samir-K9/SOC-Automation-Lab-AI-Integration/blob/be7967d9eefb9b8fa8541ee74a26cdeb360bfbbd/screenshots/Screenshot%202026-05-05%20122353.png)
 
 
 ---
