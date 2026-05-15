@@ -6,7 +6,7 @@ This project builds an automated SOC workflow that connects Splunk with AI analy
 
 It focuses on taking a basic SIEM pipeline and extending it with automation and AI so security alerts can be enriched, analyzed, and routed with minimal manual effort. The goal is to show how modern SOCs can reduce repetitive work while improving investigation quality.
 
-The stack combines Splunk for log analysis, N8N for automation, ChatGPT for contextual threat analysis, VirusTotal for malware detection, DFIR-IRIS for case management, and a Splunk MCP server for natural language SIEM queries.
+The stack combines Splunk for log analysis, n8n for automation, ChatGPT for contextual threat analysis, VirusTotal for malware detection, DFIR-IRIS for case management, and a Splunk MCP server for natural language SIEM queries.
 
 ---
 
